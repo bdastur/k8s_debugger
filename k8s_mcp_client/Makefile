@@ -31,10 +31,9 @@ region ?= us-east-1
 account  = $(shell aws sts get-caller-identity --profile ${profile} --region ${region} --output text | awk -F" " '{print $$1}')
 ecrRepo=${account}.dkr.ecr.${region}.amazonaws.com
 
-imageName=k8s_mcp_server
+imageName=k8s_mcp_client
 imageVersion=latest
-container=k8s_mcp_server
-port ?= 5001
+container=k8s_mcp_client
 
 
 test:
@@ -66,8 +65,7 @@ run-it:
 
 run:
 	docker rm -f ${container}
-	docker network create mcpnetwork
-	docker run --detach --network mcpnetwork -p ${port}:${port} --name ${container} ${imageName}
+	docker run --detach --network mcpnetwork -e profile=${profile} -e region=${region} --name ${container} ${imageName}
 
 tag-ecr:
 	docker tag ${imageName}:${imageVersion} ${ecrRepo}/${imageName}:${imageVersion}
