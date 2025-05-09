@@ -67,7 +67,8 @@ def get_pods_information(podName:str , namespace:str):
 
     @parms:
         podName: (optional) Name of the pod. If not specified it return all pods.
-        namespace: (Optional) Namespace to get the pods. If not specific, get pods from all namespaces.
+        namespace: (Optional) Namespace to get the pods. If not specific, get pods
+                   from all namespaces.
 
     @returns:
         podInfo : A json object with pod information.
@@ -122,11 +123,11 @@ def get_nodes_information(nodeName:str = None):
 def get_network_policy_information():
     """
     Return information regarding configured network policies in the Kubernetes cluster.
-    Network policies will tell you which pods can communicate to which pods through 
-    ingress policy rules and which pods can send traffic to other pods through egress policy 
+    Network policies will tell you which pods can communicate to which pods through
+    ingress policy rules and which pods can send traffic to other pods through egress policy
 
     @parms:
-        There are no parameters. 
+        There are no parameters.
 
     @returns:
         Network policy Information : A json object with network policy information.
@@ -172,16 +173,25 @@ def create_or_update_k8s_resource(resourceSpec:str):
 
 @click.group()
 def cli():
+    """
+    Click cli group
+    """
     pass
 
 @cli.command()
 @click.option("--port", type=int, help="Server Listener Port", required=True, default=5001)
 def start(port):
+    """
+    Strt MCP Server
+    """
     print("MCP Server starting on port %d" % port)
     mcp.settings.port = port
     mcp.run(transport="sse")
 
 def main():
+    """
+    Main
+    """
     cli()
 
 if __name__ == '__main__':
