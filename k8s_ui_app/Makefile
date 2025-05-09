@@ -31,10 +31,9 @@ region ?= us-east-1
 account  = $(shell aws sts get-caller-identity --profile ${profile} --region ${region} --output text | awk -F" " '{print $$1}')
 ecrRepo=${account}.dkr.ecr.${region}.amazonaws.com
 
-imageName=k8s_mcp_server
+imageName=k8s_debugger_app
 imageVersion=latest
-container=k8s_mcp_server
-port ?= 5001
+container=k8s_debugger_app
 
 
 test:
@@ -62,12 +61,11 @@ build-nocache: Dockerfile
 
 run-it:
 	docker rm -f ${container}
-	docker run -it --network mcpnetwork -p ${port}:${port} --volume ~/.aws:/root/.aws --volume ~/.kube/:/root/.kube --name ${container} ${imageName} /bin/bash 
+	docker run -it --name ${container} ${imageName} /bin/bash
 
 run:
 	docker rm -f ${container}
-	docker network create mcpnetwork
-	docker run --detach --network mcpnetwork -p ${port}:${port} --volume ~/.aws:/root/.aws --volume ~/.kube/:/root/.kube  --name ${container} ${imageName}
+	docker run --detach -p 8501:8501 -e profile=${profile} -e region=${region} --volume ~/.kube:/root/.kube --volume /tmp:/tmp --name ${container} ${imageName}
 
 tag-ecr:
 	docker tag ${imageName}:${imageVersion} ${ecrRepo}/${imageName}:${imageVersion}

@@ -575,7 +575,6 @@ class KuHelper():
 
             for cluster in kubeconfig['clusters']:
                 cluster_name = cluster['name']
-                #arn:aws:eks:us-east-1:462972568455:cluster/test-cluster-one
                 mobj = re.match(r"arn:aws:eks:(.*):(.*):cluster/(.*)", cluster_name)
                 if mobj:
                     clusterInfo = {}

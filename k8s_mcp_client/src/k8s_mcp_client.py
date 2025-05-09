@@ -72,11 +72,18 @@ def start(profile, region, url):
         """
         mcpClient = bedrock_helper.MCPClient(profileName=profile, regionName=region, systemInstructions=systemInstructions, verbose=True)
 
-        inputFile = "/tmp/k8sinput.txt"
-        outputFile = "/tmp/k8sresponse.txt"
+        pipeStage = "/tmp/mcp"
+        inputFile = os.path.join(pipeStage, "k8sinput.txt")
+        outputFile = os.path.join(pipeStage, "k8sresponse.txt")
+
+        if not os.path.exists(pipeStage):
+            os.makedirs(pipeStage)
+            print("Create pipe staging directory")
+
         try:
             tools = await mcpClient.connectMCPServer(serverUrl=url)
             while True:
+                time.sleep(3)
                 try:
                     # Read the input file.
                     if not os.path.exists(inputFile):
@@ -98,8 +105,6 @@ def start(profile, region, url):
                     print("Response: ", finalResponse)
                     with open(outputFile, "w") as outFile:
                         outFile.write(finalResponse)
-
-                    time.sleep(3)
 
                 except Exception as e:
                     print(f"\nError: {str(e)}")

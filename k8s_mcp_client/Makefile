@@ -61,11 +61,11 @@ build-nocache: Dockerfile
 
 run-it:
 	docker rm -f ${container}
-	docker run -it --name ${container} ${imageName} /bin/bash
+	docker run -it --network mcpnetwork -e profile=${profile} -e region=${region} --volume ~/.aws:/root/.aws --volume /tmp:/tmp --name ${container} ${imageName} /bin/bash
 
 run:
 	docker rm -f ${container}
-	docker run --detach --network mcpnetwork -e profile=${profile} -e region=${region} --name ${container} ${imageName}
+	docker run --detach --network mcpnetwork -e profile=${profile} -e region=${region} --volume ~/.aws:/root/.aws --volume /tmp:/tmp --name ${container} ${imageName}
 
 tag-ecr:
 	docker tag ${imageName}:${imageVersion} ${ecrRepo}/${imageName}:${imageVersion}
