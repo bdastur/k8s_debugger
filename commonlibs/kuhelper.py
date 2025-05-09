@@ -405,6 +405,8 @@ class KuHelper():
             'service': 'Service',
             'ingress': 'Ingress',
             'configmap': 'ConfigMap',
+            # amazonq-ignore-next-line
+            # amazonq-ignore-next-line
             'secret': 'Secret',
             'namespace': 'Namespace',
             'persistentvolumeclaim': 'PersistentVolumeClaim',
@@ -427,6 +429,7 @@ class KuHelper():
             'service': 'v1',
             'ingress': 'networking.k8s.io/v1',
             'configmap': 'v1',
+            # amazonq-ignore-next-line
             'secret': 'v1',
             'namespace': 'v1',
             'persistentvolumeclaim': 'v1',
