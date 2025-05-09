@@ -45,6 +45,10 @@ test:
 	@echo "ECR Repository: ${ecrRepo}"
 	@echo "--------------------------------------"
 
+clean:
+	@echo " --- cleanup ---"
+	docker rm -f ${container}
+	docker network rm mcpnetwork
 
 .PHONY: test
 
@@ -60,11 +64,12 @@ build-nocache: Dockerfile
 	docker build --no-cache -t $(imageName):${imageVersion} .
 	rm -rf .stage
 
-run-it:
+run-it: clean
 	docker rm -f ${container}
-	docker run -it --network mcpnetwork -p ${port}:${port} --volume ~/.aws:/root/.aws --volume ~/.kube/:/root/.kube --name ${container} ${imageName} /bin/bash 
+	docker network create mcpnetwork
+	docker run -it --network mcpnetwork -p ${port}:${port} --volume ~/.aws:/root/.aws --volume ~/.kube/:/root/.kube --name ${container} ${imageName} /bin/bash
 
-run:
+run: clean
 	docker rm -f ${container}
 	docker network create mcpnetwork
 	docker run --detach --network mcpnetwork -p ${port}:${port} --volume ~/.aws:/root/.aws --volume ~/.kube/:/root/.kube  --name ${container} ${imageName}
