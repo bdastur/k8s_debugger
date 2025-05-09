@@ -1,11 +1,11 @@
 # k8s Debugger
 Kubernetes Troubleshooting with Bedrock and AI Agents using MCP
 
-[![License: Apache 2.0](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
 [![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=flat&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
 
-A powerful Kubernetes debugging tool that leverages Bedrock AI Foundation Models and MCP (Master Control Program) to help diagnose and troubleshoot Kubernetes cluster issues through natural language interaction.
+A powerful Kubernetes debugging tool that leverages Bedrock AI Foundation Models and MCP (Model Context Protocol) to help diagnose and troubleshoot Kubernetes cluster issues through natural language interaction.
 
 ## 📋 Table of Contents
 - [Introduction](#introduction)
@@ -26,8 +26,10 @@ The K8s Debugger combines the power of Large Language Models with Kubernetes exp
 
 ## 🏗️ Architecture
 
+
+
 ### MCP Server
-Core backend service that interfaces with Kubernetes clusters to gather information about:
+MCP Server interfaces with Kubernetes clusters to gather cluster information, and provide various tools to gather  information about:
 - Pod status and health
 - Node information
 - Network policies
@@ -36,7 +38,7 @@ Core backend service that interfaces with Kubernetes clusters to gather informat
 - Configuration details
 
 ### MCP Client
-Intermediary service that:
+The MCP Client:
 - Interfaces with Amazon Bedrock AI Foundation Models
 - Processes natural language queries
 - Communicates with the MCP Server
@@ -51,12 +53,13 @@ User interface that provides:
 
 ## 📝 Prerequisites
 
+- AWS account with Bedrock Model Access enabled.
+- AWS credentials configured (~/.aws/credentials)
+- Gnu Automake (simplifies docker build and run operations)
 - Docker installed (if running containerized version)
-- Python 3.8+ (if running locally)
-- AWS account with Bedrock access
+- Python 3.11+ (if running locally)
 - Kubernetes cluster access
 - Valid kubeconfig file (~/.kube/config)
-- AWS credentials configured
 
 ## 🚀 Installation
 
@@ -67,8 +70,20 @@ User interface that provides:
 git clone https://github.com/yourusername/k8s-debugger.git
 cd k8s-debugger
 
-# Build and run using Docker Compose
-docker-compose up --build
+# Build and run mcp server, client and debugger ap.
+
+cd k8s_mcp_server
+make build
+make run
+
+cd k8s_mcp_client
+make build
+make run
+
+cd k8s_debugger_app
+make build
+make run
+ 
 ```
 
 ### Local Installation
@@ -99,14 +114,6 @@ aws configure
 kubectl config view
 ```
 
-3. Update `config.yaml`:
-```yaml
-bedrock:
-  region: us-west-2
-  model_id: anthropic.claude-v2
-
-kubernetes:
-  context: your-context-name
 ```
 
 ## 🎨 Features
@@ -123,7 +130,7 @@ kubernetes:
 
 ```plaintext
 Q: "Why is my nginx pod in CrashLoopBackOff?"
-Q: "Show me all pods with high CPU usage"
+Q: "Show me all pods that are not healthy"
 Q: "Check network connectivity between pod A and pod B"
 Q: "Explain the current network policies in namespace 'production'"
 ```
