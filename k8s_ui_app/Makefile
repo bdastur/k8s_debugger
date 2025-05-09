@@ -21,6 +21,10 @@
 # - Run the image with interactive (exec into the shell)
 # make  run-it
 #
+# Example usage:
+# --------------
+# make profile=brd4 region=us-east-1 build"
+#
 # Notes to self:
 # @echo - is silent echo. Displays the output only once.
 # <var> ?= <var? - The ?= allows setting default value if not passed through commandline.
@@ -61,7 +65,7 @@ build-nocache: Dockerfile
 
 run-it:
 	docker rm -f ${container}
-	docker run -it --name ${container} ${imageName} /bin/bash
+	docker run -it -p 8501:8501 -e profile=${profile} -e region=${region} --volume ~/.kube:/root/.kube --volume /tmp:/tmp --name ${container} ${imageName} /bin/bash
 
 run:
 	docker rm -f ${container}
