@@ -15,25 +15,19 @@ RUN ln -s /usr/bin/pip3.11 /usr/bin/pip
 RUN pip install -U setuptools wheel
 RUN pip install click
 RUN pip install boto3
-RUN pip install mcp
+RUN pip install streamlit
 RUN pip install kubernetes
-RUN pip install Jinja2
 
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
-RUN unzip awscliv2.zip
-RUN sudo ./aws/install
- 
-
-EXPOSE 5001
+EXPOSE 8501 
 
 RUN ln -s /usr/bin/python3.11 /usr/bin/python
 
-ADD ./.stage/commonlibs /commonlibs
-ADD ./src/k8s_mcp_server.py /k8s_mcp_server.py
-ADD ./src/start.sh /start.sh
+ADD ./.stage/commonlibs /src/commonlibs
+ADD ./src/ /src
 
-RUN chmod +x /start.sh
-RUN chmod +x /k8s_mcp_server.py
+RUN chmod +x ./src/start.sh
 
-CMD ["./start.sh"]
+#CMD ["./src/start.sh"]
+ENTRYPOINT ["streamlit", "run", "./src/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+
 
