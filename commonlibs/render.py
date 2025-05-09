@@ -25,7 +25,7 @@ def renderJ2TemplateFile(templateFile, searchPath, **renderObj):
     """
     templateLoader = jinja2.FileSystemLoader(searchpath=searchPath)
     env = jinja2.Environment(
-        loader=templateLoader, trim_blocks=True, lstrip_blocks=True)
+        loader=templateLoader, trim_blocks=True, lstrip_blocks=True, autoescape=True)
     try:
         template = env.get_template(templateFile)
     except jinja2.exceptions.TemplateNotFound as err:
@@ -49,7 +49,7 @@ def renderJ2TemplateString(templateString, **renderObj):
       renderedData: str - Rendered String.
     """
     env = jinja2.Environment(loader=jinja2.BaseLoader,
-                             trim_blocks=True, lstrip_blocks=True)
+                             trim_blocks=True, lstrip_blocks=True, autoescape=True)
 
     template = env.from_string(templateString)
     return template.render(renderObj)

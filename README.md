@@ -80,7 +80,7 @@ cd k8s_mcp_client
 make build
 make run
 
-cd k8s_debugger_app
+cd k8s_ui_app
 make build
 make run
  
@@ -97,9 +97,9 @@ cd k8s-debugger
 pip install -r requirements.txt
 
 # Start the components (in separate terminals)
-python mcp_server/main.py
-python mcp_client/main.py
-streamlit run ui/app.py
+./k8s_mcp_server.py start
+./k8s_mcp_client.py start --profile <profile> --region <region> --url <mcp server url:5001/sse>
+streamlit run src/app.py
 ```
 
 ## ⚙️ Configuration
