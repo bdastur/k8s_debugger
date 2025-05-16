@@ -250,7 +250,7 @@ class MCPClient():
         #pp = pprint.PrettyPrinter()
         #pp.pprint(toolConfig)
         response, contentText = self.brObj.converse(
-                modelId="amazon.nova-lite-v1:0",
+                modelId="us.anthropic.claude-3-7-sonnet-20250219-v1:0",
                 userInput=query, toolConfig=toolConfig)
 
         #print("=== response 1 ===")
