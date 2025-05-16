@@ -26,7 +26,7 @@ The K8s Debugger combines the power of Large Language Models with Kubernetes exp
 
 ## 🏗️ Architecture
 
-![Architecture diagram](https://https://raw.githubusercontent.com/bdastur/k8s_debugger/refs/heads/main/docs/architecture.drawio.png "K8s Debugger Architecture Diagram")
+![Architecture diagram](https://raw.githubusercontent.com/bdastur/k8s_debugger/refs/heads/main/docs/architecture.drawio.png "K8s Debugger Architecture Diagram")
 
 ### MCP Server
 MCP Server interfaces with Kubernetes clusters to gather cluster information, and provide various tools to gather  information about:
