@@ -164,6 +164,11 @@ Q: "Explain the current network policies in namespace 'production'"
 
 Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 
+⚠️ **Important Note:**  
+The code samples are provided as is, and should not be directly used in production
+environment.
+
+
 ---
 
 ## 🌟 Support
@@ -192,4 +197,3 @@ Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 
 For detailed documentation, visit our [Wiki](tba).
 
-Made with ❤️ by the K8s Debugger Team
