@@ -180,13 +180,15 @@ def cli():
 
 @cli.command()
 @click.option("--port", type=int, help="Server Listener Port", required=True, default=5001)
-def start(port):
+@click.option("--transport", type=click.Choice(["sse", "streamable-http"]),
+              help="Transport type (sse or streamable-http)", required=True, default="sse")
+def start(port, transport):
     """
     Strt MCP Server
     """
-    print("MCP Server starting on port %d" % port)
+    print("MCP Server starting (Transport: %s) on port %d" % (transport, port))
     mcp.settings.port = port
-    mcp.run(transport="sse")
+    mcp.run(transport=transport)
 
 def main():
     """
