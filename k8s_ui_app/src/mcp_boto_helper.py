@@ -47,6 +47,7 @@ def requestResponse(query):
         print("Removed outputfile")
         os.remove(outputFile)
 
+        print("Response returned: ", response)
         return response
 
     # Return standard response.
