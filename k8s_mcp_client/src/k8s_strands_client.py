@@ -23,26 +23,33 @@ Query: q
 
 """
 
-import asyncio
 import click
 import os
 import time
-import commonlibs.bedrock_helper as bedrock_helper
-
 import boto3
 import mcp.client.sse as sse
 import mcp.client.streamable_http as streamable_http
-
-#from mcp.client.streamable_http import streamablehttp_client
+import commonlibs.strands_helper as strands_helper
 from strands import Agent
 from strands.tools.mcp.mcp_client import MCPClient
+from strands.telemetry.tracer import get_tracer
 import strands.models as models
+import pprint
+
+
+
+# Configure the tracer
+tracer = get_tracer(
+    service_name="k8s_stands_agent",
+    otlp_endpoint="http://localhost:4318",
+    otlp_headers={"Authorization": "Bearer TOKEN"},
+    enable_console_export=True  # Helpful for development
+)
 
 
 @click.group()
 def cli():
     pass
-
 
 
 def createMcpClient(url, transport):
@@ -61,7 +68,7 @@ def createMcpClient(url, transport):
             return streamable_http.streamablehttp_client(url=url)
 
     mcpClient = MCPClient(createTransport)
-        
+
     return mcpClient
 
 
@@ -147,9 +154,12 @@ def start(profile, region, transport, url):
                 if query.lower() in ["quit", "q"]:
                     break
 
-                response = simpleAgent(query) 
+                response = simpleAgent(query)
                 finalResponse = responseParser(response)
-                print("Response: ", finalResponse, type(finalResponse))
+                pp = pprint.PrettyPrinter()
+                pp.pprint(response.metrics)
+                print("Dir: ", dir(response.metrics))
+                #print(response.metrics.get_summary())
 
                 with open(outputFile, "w") as outFile:
                     outFile.write(str(finalResponse))
